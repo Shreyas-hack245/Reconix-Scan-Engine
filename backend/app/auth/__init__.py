@@ -1,0 +1,1 @@
+"""Authentication package for Reconix Scan Engine (JWT issuance and dependencies)."""
