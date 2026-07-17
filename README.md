@@ -1,1 +1,4 @@
 # Reconix-Scan-Engine
+
+##ps:
+Design a comprehensive, automated web application scanner that discovers common vulnerabilities (XSS, SQLi, SSRF, RCE, auth flaws), produces prioritized findings with proof-of-concept validation, and generates safe, custom exploit-style demonstrations (non-destructive POCs) plus clear remediation guidance mapped to severity. Deliverables should include the discovery engine, a safe POC generator that demonstrates impact without causing harm, a remediation report template for developers, and an audit trail of tests performed. Judges will value accuracy, noise reduction (low false positives), safe exploit verification, and quality of remediation advice.
