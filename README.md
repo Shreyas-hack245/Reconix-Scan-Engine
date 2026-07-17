@@ -1,4 +1,17 @@
-# Reconix-Scan-Engine
+# Reconix Scan Engine
 
-##ps:
-Design a comprehensive, automated web application scanner that discovers common vulnerabilities (XSS, SQLi, SSRF, RCE, auth flaws), produces prioritized findings with proof-of-concept validation, and generates safe, custom exploit-style demonstrations (non-destructive POCs) plus clear remediation guidance mapped to severity. Deliverables should include the discovery engine, a safe POC generator that demonstrates impact without causing harm, a remediation report template for developers, and an audit trail of tests performed. Judges will value accuracy, noise reduction (low false positives), safe exploit verification, and quality of remediation advice.
+Reconix Scan Engine is an AI-powered web application security scanner that helps identify common web vulnerabilities through safe and automated testing.
+
+## Features
+
+- Automated website crawling
+- Vulnerability scanning
+- Safe PoC validation
+- AI-powered vulnerability explanations
+- Risk-based findings
+- HTML, PDF, Markdown & JSON reports
+- Audit trail of performed tests
+
+## Status
+
+🚧 Currently under development.
