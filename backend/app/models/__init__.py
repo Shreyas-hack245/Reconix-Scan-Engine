@@ -1,1 +1,1 @@
-""ORM models package for Reconix Scan Engine."""
+"""ORM models package for Reconix Scan Engine."""
