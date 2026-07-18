@@ -2,9 +2,8 @@
 Reconix Scan Engine - FastAPI application entrypoint.
 
 This module wires together configuration, database initialization,
-CORS, and logging. API routers (scans, findings, reports, audit, auth)
-are added in a later module and included here via `include_router`
-once implemented.
+CORS, logging, and all API routers (auth, scans, findings, reports,
+audit).
 """
 
 from contextlib import asynccontextmanager
@@ -53,15 +52,13 @@ def create_app() -> FastAPI:
         """Simple liveness/readiness probe."""
         return {"status": "ok", "app": settings.app_name, "environment": settings.environment}
 
-    # NOTE: API routers (scans, findings, reports, audit, auth) are
-    # registered here once implemented. Example (added in a later module):
-    #
-    #   from app.api import auth, scans, findings, reports, audit
-    #   app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-    #   app.include_router(scans.router, prefix="/api/scans", tags=["scans"])
-    #   app.include_router(findings.router, prefix="/api/findings", tags=["findings"])
-    #   app.include_router(reports.router, prefix="/api/reports", tags=["reports"])
-    #   app.include_router(audit.router, prefix="/api/audit", tags=["audit"])
+    from app.api import audit, auth, findings, reports, scans
+
+    app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+    app.include_router(scans.router, prefix="/api/scans", tags=["scans"])
+    app.include_router(findings.router, prefix="/api/findings", tags=["findings"])
+    app.include_router(reports.router, prefix="/api/reports", tags=["reports"])
+    app.include_router(audit.router, prefix="/api/audit", tags=["audit"])
 
     return app
 
