@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reconix Scan Engine Report - {{ report.target_url }}</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --border: #262b36;
+    --text: #e6e8eb;
+    --muted: #9aa2b1;
+    --critical: #ef4444;
+    --high: #f97316;
+    --medium: #eab308;
+    --low: #3b82f6;
+    --info: #94a3b8;
+    --accent: #22d3ee;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 32px;
+    line-height: 1.5;
+  }
+  h1 { font-size: 26px; margin-bottom: 4px; }
+  h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 16px; margin-bottom: 6px; }
+  .meta { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .stat-value { font-size: 22px; font-weight: 700; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat-card.critical .stat-value { color: var(--critical); }
+  .stat-card.high .stat-value { color: var(--high); }
+  .stat-card.medium .stat-value { color: var(--medium); }
+  .stat-card.low .stat-value { color: var(--low); }
+  .stat-card.info .stat-value { color: var(--info); }
+  .stat-card.risk .stat-value { color: var(--accent); }
+
+  .finding-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--info);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .finding-card.critical { border-left-color: var(--critical); }
+  .finding-card.high { border-left-color: var(--high); }
+  .finding-card.medium { border-left-color: var(--medium); }
+  .finding-card.low { border-left-color: var(--low); }
+  .finding-card.info { border-left-color: var(--info); }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-right: 6px;
+  }
+  .badge.critical { background: rgba(239,68,68,0.15); color: var(--critical); }
+  .badge.high { background: rgba(249,115,22,0.15); color: var(--high); }
+  .badge.medium { background: rgba(234,179,8,0.15); color: var(--medium); }
+  .badge.low { background: rgba(59,130,246,0.15); color: var(--low); }
+  .badge.info { background: rgba(148,163,184,0.15); color: var(--info); }
+  .badge.fp-warning { background: rgba(234,179,8,0.2); color: var(--medium); }
+
+  .kv { font-size: 13px; color: var(--muted); margin: 4px 0; }
+  .kv b { color: var(--text); }
+  code, pre {
+    background: #0b0d11;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    display: block;
+  }
+  .section-label { font-weight: 700; margin-top: 12px; margin-bottom: 4px; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+  th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; }
+  th { background: var(--panel); color: var(--muted); }
+  tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+  .footer { margin-top: 48px; color: var(--muted); font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>Reconix Scan Engine</h1>
+<div class="meta">
+  Target: <b>{{ report.target_url }}</b> &middot;
+  Scan ID: <code style="display:inline;padding:1px 6px;">{{ report.scan_id }}</code> &middot;
+  Generated: {{ report.generated_at }}
+</div>
+
+<h2>Executive Summary</h2>
+<div class="summary-grid">
+  <div class="stat-card risk"><div class="stat-value">{{ report.summary.risk_score }}</div><div class="stat-label">Risk Score</div></div>
+  <div class="stat-card critical"><div class="stat-value">{{ report.summary.critical_count }}</div><div class="stat-label">Critical</div></div>
+  <div class="stat-card high"><div class="stat-value">{{ report.summary.high_count }}</div><div class="stat-label">High</div></div>
+  <div class="stat-card medium"><div class="stat-value">{{ report.summary.medium_count }}</div><div class="stat-label">Medium</div></div>
+  <div class="stat-card low"><div class="stat-value">{{ report.summary.low_count }}</div><div class="stat-label">Low</div></div>
+  <div class="stat-card info"><div class="stat-value">{{ report.summary.info_count }}</div><div class="stat-label">Info</div></div>
+</div>
+<div class="kv" style="margin-top:14px;">
+  <b>{{ report.summary.pages_crawled }}</b> pages crawled &middot;
+  <b>{{ report.summary.endpoints_discovered }}</b> endpoints discovered &middot;
+  <b>{{ report.summary.total_findings }}</b> total findings
+</div>
+
+<h2>Findings</h2>
+{% if not report.findings %}
+  <p>No findings were reported for this scan.</p>
+{% endif %}
+{% for f in report.findings %}
+<div class="finding-card {{ f.severity }}">
+  <div>
+    <span class="badge {{ f.severity }}">{{ f.severity }}</span>
+    {% if f.is_likely_false_positive %}<span class="badge fp-warning">verify: low confidence</span>{% endif %}
+  </div>
+  <h3>{{ loop.index }}. {{ f.title }}</h3>
+  <div class="kv"><b>URL:</b> {{ f.method }} {{ f.url }}</div>
+  <div class="kv"><b>Parameter:</b> {{ f.parameter or "N/A" }}</div>
+  <div class="kv"><b>OWASP:</b> {{ f.owasp_category }}</div>
+  <div class="kv"><b>CVSS:</b> {{ f.cvss_score }}{% if f.cvss_vector %} ({{ f.cvss_vector }}){% endif %}</div>
+  <div class="kv"><b>Confidence:</b> {{ "%.2f"|format(f.confidence) }} ({{ f.confidence_band }})</div>
+
+  <div class="section-label">Evidence</div>
+  <div>{{ f.evidence }}</div>
+
+  <div class="section-label">Risk Explanation</div>
+  <div>{{ f.risk_explanation }}</div>
+
+  <div class="section-label">Business Impact</div>
+  <div>{{ f.business_impact }}</div>
+
+  <div class="section-label">Remediation</div>
+  <div style="white-space: pre-line;">{{ f.remediation }}</div>
+
+  {% if f.safe_poc %}
+  <div class="section-label">Safe Proof of Concept</div>
+  <div class="kv"><b>Request</b></div>
+  <pre>{{ f.safe_poc.example_request }}</pre>
+  <div class="kv"><b>Example vulnerable response</b></div>
+  <pre>{{ f.safe_poc.example_response }}</pre>
+  <div class="kv"><b>Expected safe output:</b> {{ f.safe_poc.expected_safe_output }}</div>
+  <div class="kv"><b>Impact:</b> {{ f.safe_poc.impact }}</div>
+  <div class="kv"><b>Verification steps:</b></div>
+  <ol>
+    {% for step in f.safe_poc.verification_steps %}<li>{{ step }}</li>{% endfor %}
+  </ol>
+  {% endif %}
+</div>
+{% endfor %}
+
+<h2>Audit Trail</h2>
+<div class="kv">{{ report.audit_trail|length }} requests logged (showing most recent 50).</div>
+<table>
+  <thead>
+    <tr><th>Timestamp</th><th>Module</th><th>Method</th><th>URL</th><th>Status</th><th>Duration (ms)</th></tr>
+  </thead>
+  <tbody>
+    {% for entry in report.audit_trail[-50:] %}
+    <tr>
+      <td>{{ entry.timestamp }}</td>
+      <td>{{ entry.module }}</td>
+      <td>{{ entry.method }}</td>
+      <td>{{ entry.url }}</td>
+      <td>{{ entry.response_code or "-" }}</td>
+      <td>{{ "%.1f"|format(entry.duration_ms) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="footer">
+  Generated by Reconix Scan Engine &middot; Defensive, educational vulnerability scanning &middot;
+  All proof-of-concept content in this report is safe and non-destructive.
+</div>
+
+</body>
+</html>
