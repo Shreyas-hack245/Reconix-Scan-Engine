@@ -1,83 +1,230 @@
-# Reconix Scan Engine
+# 🛡️ Reconix Scan Engine
 
-Reconix Scan Engine is an AI-powered web application security scanner that helps identify common web vulnerabilities through safe and automated testing.
+**Reconix Scan Engine** is an AI-powered web application security scanner that automates the discovery of common web vulnerabilities through intelligent crawling, safe vulnerability validation, AI-assisted analysis, and comprehensive reporting.
 
-## Features
+Designed for penetration testers, security researchers, developers, and security teams, Reconix Scan Engine focuses on **accurate detection, low false positives, safe proof-of-concept validation, and actionable remediation guidance**.
 
-- Automated website crawling
-- Vulnerability scanning
-- Safe PoC validation
-- AI-powered vulnerability explanations
-- Risk-based findings
-- HTML, PDF, Markdown & JSON reports
-- Audit trail of performed tests
+---
 
-## Project layout
+> ⚠️ **Disclaimer:** This project is intended for **authorized security assessments, defensive security research, and educational purposes only.** Only scan systems that you own or have explicit permission to test.
 
-```
-backend/    FastAPI application: crawler, scanner modules, AI
-            enrichment, reporting engine, JWT auth, SQLite database
-frontend/   React + TypeScript + Tailwind dashboard
-docs/       Architecture notes and additional documentation
-```
+---
 
-## Quick start (without Docker)
+# ✨ Features
+
+- 🌐 Intelligent website crawling and endpoint discovery
+- 📝 HTML form extraction
+- 🔍 JavaScript endpoint discovery
+- 🤖 OpenAPI / Swagger endpoint parsing
+- 🛡️ Robots.txt & Sitemap parsing
+
+### Vulnerability Detection
+
+- Cross-Site Scripting (XSS)
+- SQL Injection (SQLi)
+- Server-Side Request Forgery (SSRF)
+- Remote Code Execution (Safe Detection)
+- Command Injection
+- Cross-Site Request Forgery (CSRF)
+- Insecure Direct Object Reference (IDOR)
+- Broken Access Control
+- Security Header Analysis
+- Cookie Security Analysis
+- CORS Misconfiguration
+- Open Redirect
+- File Upload Vulnerabilities
+- Directory Traversal
+- Information Disclosure
+- Clickjacking Detection
+
+---
+
+# 🤖 AI-Powered Analysis
+
+Every detected finding is enriched with:
+
+- AI-generated vulnerability explanation
+- Business impact assessment
+- Attack scenario overview
+- Confidence scoring
+- OWASP Top 10 mapping
+- CVSS scoring
+- Safe Proof-of-Concept (PoC)
+- Step-by-step remediation guidance
+
+---
+
+# 📊 Reporting
+
+Generate reports in multiple formats:
+
+- HTML Report
+- PDF Report
+- Markdown Report
+- JSON Report
+
+Each report includes:
+
+- Executive Summary
+- Risk Distribution
+- Technical Findings
+- Safe PoCs
+- Remediation Recommendations
+- OWASP Mapping
+- CVSS Scores
+- Complete Audit Trail
+
+---
+
+# 🔐 Security Features
+
+- JWT Authentication
+- Role-Based Access Control (RBAC)
+- Rate Limiting
+- Request Audit Logging
+- Scan History
+- Safe Validation Techniques
+- Non-Destructive Security Testing
+
+---
+
+# 🛠️ Tech Stack
 
 ### Backend
 
-```bash
-cd backend
-python -m venv .venv
-# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env      # then set SECRET_KEY to a random value
-uvicorn app.main:app --reload
-```
-
-- API docs: http://127.0.0.1:8000/docs
-- Health check: http://127.0.0.1:8000/health
-
-Register a user and log in via `/docs` (or the frontend below), then
-use `POST /api/scans/` to launch a scan against a target you're
-authorized to test.
+- FastAPI
+- SQLAlchemy
+- Pydantic
+- HTTPX
+- Playwright
+- BeautifulSoup4
+- LXML
+- SQLite / PostgreSQL
 
 ### Frontend
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
 
-- Dashboard: http://localhost:5173 (proxies `/api` to the backend on port 8000)
+### Reporting
 
-## Quick start (with Docker)
+- Jinja2
+- WeasyPrint
+- Markdown2
 
-```bash
-docker compose up --build
-```
+---
 
-- Frontend: http://localhost:8080
-- Backend: http://localhost:8000
+# 🚀 Installation
 
-## Running tests
+## Backend
 
 ```bash
 cd backend
+
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# Linux/macOS
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+cp .env.example .env
+
+uvicorn app.main:app --reload
+```
+
+Backend:
+
+```
+http://127.0.0.1:8000
+```
+
+API Documentation:
+
+```
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+Frontend:
+
+```
+http://localhost:5173
+```
+
+---
+
+# 🧪 Running Tests
+
+```bash
+cd backend
+
 pytest
 ```
 
-Tests use `httpx.MockTransport` to simulate target servers, so they run
-fully offline with no real network requests.
+---
 
-## Further reading
+# 📂 Reports
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for a walkthrough of
-the scan pipeline (crawl -> scan -> AI enrichment -> report) and the
-data model, and [`docs/README.md`](docs/README.md) for a more detailed
-usage guide (API walkthrough, adding a new scanner module, report
-formats).
+Reconix Scan Engine can export findings as:
 
-## Status
+- HTML
+- PDF
+- JSON
+- Markdown
 
-🚧 Currently under development.
+Reports include:
+
+- Executive Summary
+- Technical Findings
+- Safe Proof-of-Concepts
+- Severity Classification
+- OWASP Mapping
+- CVSS Scores
+- Remediation Steps
+- Audit Trail
+
+---
+
+# 📌 Roadmap
+
+- ✅ Intelligent Crawling
+- ✅ Vulnerability Detection Engine
+- ✅ AI Risk Analysis
+- ✅ Safe PoC Generation
+- ✅ Reporting Engine
+- ✅ React Dashboard
+- ✅ Authentication & RBAC
+- ✅ Audit Logging
+- ✅ Automated Testing
+
+---
+
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# ⚠️ Legal Notice
+
+Reconix Scan Engine is intended solely for **authorized penetration testing, security research, and educational purposes**.
+
+The developers assume **no responsibility** for misuse or unauthorized use of this software. Always obtain proper authorization before scanning any system.
