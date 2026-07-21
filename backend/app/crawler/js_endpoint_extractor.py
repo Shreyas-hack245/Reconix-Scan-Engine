@@ -61,7 +61,7 @@ async def extract_js_endpoints(
     Extract candidate API/endpoint paths referenced from a page's inline
     and (optionally) external JavaScript.
     """
-    soup = BeautifulSoup(html, "lxml")
+    soup = BeautifulSoup(html, "html.parser")
     discovered: list[JsEndpoint] = []
     seen_urls: set[str] = set()
 

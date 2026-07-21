@@ -85,7 +85,7 @@ class Crawler:
 
     @staticmethod
     def _extract_links(html: str, page_url: str) -> list[str]:
-        soup = BeautifulSoup(html, "lxml")
+        soup = BeautifulSoup(html, "html.parser")
         links: list[str] = []
         for anchor in soup.find_all("a", href=True):
             href = anchor["href"].strip()

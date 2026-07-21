@@ -43,7 +43,7 @@ _CSRF_NAME_HINTS = ("csrf", "token", "authenticity", "_token", "nonce")
 
 def extract_forms(html: str, page_url: str) -> list[DiscoveredForm]:
     """Parse HTML and return all discovered forms with their fields."""
-    soup = BeautifulSoup(html, "lxml")
+    soup = BeautifulSoup(html, "html.parser")
     forms: list[DiscoveredForm] = []
 
     for form_tag in soup.find_all("form"):
