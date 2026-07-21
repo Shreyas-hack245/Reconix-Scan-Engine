@@ -53,6 +53,7 @@ def test_generate_pdf_report_returns_valid_pdf_bytes():
     assert data.startswith(b"%PDF")
     assert b"Reconix Scan Report" in data
     assert b"Executive Summary" in data
+    assert b"Recommended Next Steps" in data
     assert b"Findings" in data
     assert b"Reflected XSS" in data
     assert b"%%EOF" in data

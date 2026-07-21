@@ -5,42 +5,77 @@
 <title>Reconix Scan Engine Report - {{ report.target_url }}</title>
 <style>
   :root {
-    --bg: #0f1115;
-    --panel: #171a21;
-    --border: #262b36;
-    --text: #e6e8eb;
-    --muted: #9aa2b1;
-    --critical: #ef4444;
-    --high: #f97316;
-    --medium: #eab308;
-    --low: #3b82f6;
-    --info: #94a3b8;
-    --accent: #22d3ee;
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --panel: #f8fafc;
+    --border: #dce4ee;
+    --text: #0f172a;
+    --muted: #64748b;
+    --critical: #dc2626;
+    --high: #ea580c;
+    --medium: #d97706;
+    --low: #2563eb;
+    --info: #64748b;
+    --accent: #0f766e;
   }
+  @page { size: A4; margin: 12mm; }
   * { box-sizing: border-box; }
   body {
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
-    padding: 32px;
-    line-height: 1.5;
+    padding: 0;
+    line-height: 1.45;
   }
-  h1 { font-size: 26px; margin-bottom: 4px; }
-  h2 { font-size: 20px; margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-  h3 { font-size: 16px; margin-bottom: 6px; }
-  .meta { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 32px 40px;
+    background: var(--surface);
+  }
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+    color: white;
+    padding: 22px 24px;
+    border-radius: 14px;
+    margin-bottom: 20px;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    margin-bottom: 6px;
+  }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  .header-meta { font-size: 13px; opacity: 0.95; }
+  h2 {
+    font-size: 18px;
+    margin: 26px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+    color: #0f172a;
+  }
+  h3 { font-size: 15px; margin: 8px 0 6px; }
+  .hero-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
-    margin-top: 16px;
+    margin-top: 10px;
   }
   .stat-card {
     background: var(--panel);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
+    border-radius: 10px;
+    padding: 12px;
     text-align: center;
   }
   .stat-value { font-size: 22px; font-weight: 700; }
@@ -51,21 +86,31 @@
   .stat-card.low .stat-value { color: var(--low); }
   .stat-card.info .stat-value { color: var(--info); }
   .stat-card.risk .stat-value { color: var(--accent); }
-
+  .kv { font-size: 13px; color: var(--muted); margin: 6px 0; }
+  .kv b { color: var(--text); }
+  .recommendations {
+    background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%);
+    border: 1px solid #bfdbfe;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .recommendations ul { margin: 6px 0 0 18px; padding: 0; }
+  .recommendations li { margin-bottom: 6px; }
   .finding-card {
-    background: var(--panel);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-left: 4px solid var(--info);
-    border-radius: 8px;
-    padding: 18px;
-    margin-bottom: 16px;
+    border-radius: 10px;
+    padding: 16px 16px 12px;
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   .finding-card.critical { border-left-color: var(--critical); }
   .finding-card.high { border-left-color: var(--high); }
   .finding-card.medium { border-left-color: var(--medium); }
   .finding-card.low { border-left-color: var(--low); }
   .finding-card.info { border-left-color: var(--info); }
-
   .badge {
     display: inline-block;
     font-size: 11px;
@@ -74,18 +119,16 @@
     padding: 2px 8px;
     border-radius: 999px;
     margin-right: 6px;
+    margin-bottom: 6px;
   }
-  .badge.critical { background: rgba(239,68,68,0.15); color: var(--critical); }
-  .badge.high { background: rgba(249,115,22,0.15); color: var(--high); }
-  .badge.medium { background: rgba(234,179,8,0.15); color: var(--medium); }
-  .badge.low { background: rgba(59,130,246,0.15); color: var(--low); }
-  .badge.info { background: rgba(148,163,184,0.15); color: var(--info); }
-  .badge.fp-warning { background: rgba(234,179,8,0.2); color: var(--medium); }
-
-  .kv { font-size: 13px; color: var(--muted); margin: 4px 0; }
-  .kv b { color: var(--text); }
+  .badge.critical { background: rgba(220,38,38,0.12); color: var(--critical); }
+  .badge.high { background: rgba(234,88,12,0.12); color: var(--high); }
+  .badge.medium { background: rgba(217,119,6,0.12); color: var(--medium); }
+  .badge.low { background: rgba(37,99,235,0.12); color: var(--low); }
+  .badge.info { background: rgba(100,116,139,0.12); color: var(--info); }
+  .badge.fp-warning { background: rgba(217,119,6,0.16); color: var(--medium); }
   code, pre {
-    background: #0b0d11;
+    background: #f8fafc;
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 8px 10px;
@@ -95,107 +138,121 @@
     word-break: break-all;
     display: block;
   }
-  .section-label { font-weight: 700; margin-top: 12px; margin-bottom: 4px; font-size: 13px; }
-  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 12px; }
+  .section-label { font-weight: 700; margin-top: 10px; margin-bottom: 3px; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px; }
   th, td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; }
   th { background: var(--panel); color: var(--muted); }
-  tr:nth-child(even) { background: rgba(255,255,255,0.02); }
-  .footer { margin-top: 48px; color: var(--muted); font-size: 12px; text-align: center; }
+  tr:nth-child(even) { background: rgba(15,23,42,0.02); }
+  .footer { margin-top: 36px; color: var(--muted); font-size: 12px; text-align: center; }
 </style>
 </head>
 <body>
-
-<h1>Reconix Scan Engine</h1>
-<div class="meta">
-  Target: <b>{{ report.target_url }}</b> &middot;
-  Scan ID: <code style="display:inline;padding:1px 6px;">{{ report.scan_id }}</code> &middot;
-  Generated: {{ report.generated_at }}
-</div>
-
-<h2>Executive Summary</h2>
-<div class="summary-grid">
-  <div class="stat-card risk"><div class="stat-value">{{ report.summary.risk_score }}</div><div class="stat-label">Risk Score</div></div>
-  <div class="stat-card critical"><div class="stat-value">{{ report.summary.critical_count }}</div><div class="stat-label">Critical</div></div>
-  <div class="stat-card high"><div class="stat-value">{{ report.summary.high_count }}</div><div class="stat-label">High</div></div>
-  <div class="stat-card medium"><div class="stat-value">{{ report.summary.medium_count }}</div><div class="stat-label">Medium</div></div>
-  <div class="stat-card low"><div class="stat-value">{{ report.summary.low_count }}</div><div class="stat-label">Low</div></div>
-  <div class="stat-card info"><div class="stat-value">{{ report.summary.info_count }}</div><div class="stat-label">Info</div></div>
-</div>
-<div class="kv" style="margin-top:14px;">
-  <b>{{ report.summary.pages_crawled }}</b> pages crawled &middot;
-  <b>{{ report.summary.endpoints_discovered }}</b> endpoints discovered &middot;
-  <b>{{ report.summary.total_findings }}</b> total findings
-</div>
-
-<h2>Findings</h2>
-{% if not report.findings %}
-  <p>No findings were reported for this scan.</p>
-{% endif %}
-{% for f in report.findings %}
-<div class="finding-card {{ f.severity }}">
-  <div>
-    <span class="badge {{ f.severity }}">{{ f.severity }}</span>
-    {% if f.is_likely_false_positive %}<span class="badge fp-warning">verify: low confidence</span>{% endif %}
+<div class="page">
+  <div class="header">
+    <div class="eyebrow">Professional Security Assessment</div>
+    <h1>Reconix Scan Report</h1>
+    <div class="header-meta">
+      <b>Target:</b> {{ report.target_url }} &middot;
+      <b>Scan ID:</b> {{ report.scan_id }} &middot;
+      <b>Generated:</b> {{ report.generated_at }}
+    </div>
   </div>
-  <h3>{{ loop.index }}. {{ f.title }}</h3>
-  <div class="kv"><b>URL:</b> {{ f.method }} {{ f.url }}</div>
-  <div class="kv"><b>Parameter:</b> {{ f.parameter or "N/A" }}</div>
-  <div class="kv"><b>OWASP:</b> {{ f.owasp_category }}</div>
-  <div class="kv"><b>CVSS:</b> {{ f.cvss_score }}{% if f.cvss_vector %} ({{ f.cvss_vector }}){% endif %}</div>
-  <div class="kv"><b>Confidence:</b> {{ "%.2f"|format(f.confidence) }} ({{ f.confidence_band }})</div>
 
-  <div class="section-label">Evidence</div>
-  <div>{{ f.evidence }}</div>
+  <div class="hero-card">
+    <h2>Executive Summary</h2>
+    <p>This report provides a concise, executive-level view of the security posture for the scanned target. It highlights severity trends, primary risk areas, and clear follow-up actions for remediation and retesting.</p>
+    <div class="summary-grid">
+      <div class="stat-card risk"><div class="stat-value">{{ report.summary.risk_score }}</div><div class="stat-label">Risk Score</div></div>
+      <div class="stat-card critical"><div class="stat-value">{{ report.summary.critical_count }}</div><div class="stat-label">Critical</div></div>
+      <div class="stat-card high"><div class="stat-value">{{ report.summary.high_count }}</div><div class="stat-label">High</div></div>
+      <div class="stat-card medium"><div class="stat-value">{{ report.summary.medium_count }}</div><div class="stat-label">Medium</div></div>
+    </div>
+    <div class="kv" style="margin-top:12px;">
+      <b>{{ report.summary.pages_crawled }}</b> pages crawled &middot;
+      <b>{{ report.summary.endpoints_discovered }}</b> endpoints discovered &middot;
+      <b>{{ report.summary.total_findings }}</b> total findings
+    </div>
+  </div>
 
-  <div class="section-label">Risk Explanation</div>
-  <div>{{ f.risk_explanation }}</div>
+  <h2>Recommended Next Steps</h2>
+  <div class="recommendations">
+    <ul>
+      {% if report.summary.critical_count > 0 %}<li>Prioritize remediation for critical vulnerabilities and restrict public access until they are validated and mitigated.</li>{% endif %}
+      {% if report.summary.high_count > 0 %}<li>Address high-severity findings as part of the next remediation sprint and verify the fixes with follow-up testing.</li>{% endif %}
+      {% if report.summary.medium_count > 0 or report.summary.low_count > 0 %}<li>Review medium and low severity weaknesses to harden the application and reduce long-term exposure.</li>{% endif %}
+      {% if report.findings %}<li>Retest the affected endpoints after remediation and preserve evidence in the audit trail for review and compliance.</li>{% endif %}
+    </ul>
+  </div>
 
-  <div class="section-label">Business Impact</div>
-  <div>{{ f.business_impact }}</div>
-
-  <div class="section-label">Remediation</div>
-  <div style="white-space: pre-line;">{{ f.remediation }}</div>
-
-  {% if f.safe_poc %}
-  <div class="section-label">Safe Proof of Concept</div>
-  <div class="kv"><b>Request</b></div>
-  <pre>{{ f.safe_poc.example_request }}</pre>
-  <div class="kv"><b>Example vulnerable response</b></div>
-  <pre>{{ f.safe_poc.example_response }}</pre>
-  <div class="kv"><b>Expected safe output:</b> {{ f.safe_poc.expected_safe_output }}</div>
-  <div class="kv"><b>Impact:</b> {{ f.safe_poc.impact }}</div>
-  <div class="kv"><b>Verification steps:</b></div>
-  <ol>
-    {% for step in f.safe_poc.verification_steps %}<li>{{ step }}</li>{% endfor %}
-  </ol>
+  <h2>Findings</h2>
+  {% if not report.findings %}
+    <p>No findings were reported for this scan.</p>
   {% endif %}
+  {% for f in report.findings %}
+  <div class="finding-card {{ f.severity }}">
+    <div>
+      <span class="badge {{ f.severity }}">{{ f.severity }}</span>
+      {% if f.is_likely_false_positive %}<span class="badge fp-warning">verify: low confidence</span>{% endif %}
+    </div>
+    <h3>{{ loop.index }}. {{ f.title }}</h3>
+    <div class="kv"><b>URL:</b> {{ f.method }} {{ f.url }}</div>
+    <div class="kv"><b>Parameter:</b> {{ f.parameter or "N/A" }}</div>
+    <div class="kv"><b>OWASP:</b> {{ f.owasp_category }}</div>
+    <div class="kv"><b>CVSS:</b> {{ f.cvss_score }}{% if f.cvss_vector %} ({{ f.cvss_vector }}){% endif %}</div>
+    <div class="kv"><b>Confidence:</b> {{ "%.2f"|format(f.confidence) }} ({{ f.confidence_band }})</div>
+
+    <div class="section-label">Evidence</div>
+    <div>{{ f.evidence }}</div>
+
+    <div class="section-label">Risk Explanation</div>
+    <div>{{ f.risk_explanation }}</div>
+
+    <div class="section-label">Business Impact</div>
+    <div>{{ f.business_impact }}</div>
+
+    <div class="section-label">Remediation</div>
+    <div style="white-space: pre-line;">{{ f.remediation }}</div>
+
+    {% if f.safe_poc %}
+    <div class="section-label">Safe Proof of Concept</div>
+    <div class="kv"><b>Request</b></div>
+    <pre>{{ f.safe_poc.example_request }}</pre>
+    <div class="kv"><b>Example vulnerable response</b></div>
+    <pre>{{ f.safe_poc.example_response }}</pre>
+    <div class="kv"><b>Expected safe output:</b> {{ f.safe_poc.expected_safe_output }}</div>
+    <div class="kv"><b>Impact:</b> {{ f.safe_poc.impact }}</div>
+    <div class="kv"><b>Verification steps:</b></div>
+    <ol>
+      {% for step in f.safe_poc.verification_steps %}<li>{{ step }}</li>{% endfor %}
+    </ol>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+  <h2>Audit Trail</h2>
+  <div class="kv">{{ report.audit_trail|length }} requests logged (showing most recent 50).</div>
+  <table>
+    <thead>
+      <tr><th>Timestamp</th><th>Module</th><th>Method</th><th>URL</th><th>Status</th><th>Duration (ms)</th></tr>
+    </thead>
+    <tbody>
+      {% for entry in report.audit_trail[-50:] %}
+      <tr>
+        <td>{{ entry.timestamp }}</td>
+        <td>{{ entry.module }}</td>
+        <td>{{ entry.method }}</td>
+        <td>{{ entry.url }}</td>
+        <td>{{ entry.response_code or "-" }}</td>
+        <td>{{ "%.1f"|format(entry.duration_ms) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Generated by Reconix Scan Engine &middot; Defensive, educational vulnerability scanning &middot;
+    All proof-of-concept content in this report is safe and non-destructive.
+  </div>
 </div>
-{% endfor %}
-
-<h2>Audit Trail</h2>
-<div class="kv">{{ report.audit_trail|length }} requests logged (showing most recent 50).</div>
-<table>
-  <thead>
-    <tr><th>Timestamp</th><th>Module</th><th>Method</th><th>URL</th><th>Status</th><th>Duration (ms)</th></tr>
-  </thead>
-  <tbody>
-    {% for entry in report.audit_trail[-50:] %}
-    <tr>
-      <td>{{ entry.timestamp }}</td>
-      <td>{{ entry.module }}</td>
-      <td>{{ entry.method }}</td>
-      <td>{{ entry.url }}</td>
-      <td>{{ entry.response_code or "-" }}</td>
-      <td>{{ "%.1f"|format(entry.duration_ms) }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<div class="footer">
-  Generated by Reconix Scan Engine &middot; Defensive, educational vulnerability scanning &middot;
-  All proof-of-concept content in this report is safe and non-destructive.
-</div>
-
 </body>
 </html>

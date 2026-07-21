@@ -18,6 +18,7 @@ def _escape_pdf_text(text: str) -> str:
 def _build_fallback_pdf(report_data: ScanReportData) -> bytes:
     lines: list[str] = []
     lines.append("Reconix Scan Report")
+    lines.append("Professional Security Assessment")
     lines.append(f"Target: {report_data.target_url}")
     lines.append(f"Scan ID: {report_data.scan_id}")
     lines.append(f"Generated: {report_data.generated_at}")
@@ -36,6 +37,16 @@ def _build_fallback_pdf(report_data: ScanReportData) -> bytes:
         f"Pages crawled: {report_data.summary.pages_crawled}; "
         f"Endpoints discovered: {report_data.summary.endpoints_discovered}"
     )
+    lines.append("")
+    lines.append("Recommended Next Steps")
+    if report_data.summary.critical_count > 0:
+        lines.append("- Prioritize remediation for critical vulnerabilities immediately.")
+    if report_data.summary.high_count > 0:
+        lines.append("- Resolve high-severity findings during the next remediation sprint.")
+    if report_data.summary.medium_count > 0 or report_data.summary.low_count > 0:
+        lines.append("- Review medium and low severity findings to reduce long-term exposure.")
+    if report_data.findings:
+        lines.append("- Retest affected endpoints after remediation and preserve evidence.")
 
     if report_data.findings:
         lines.append("")
