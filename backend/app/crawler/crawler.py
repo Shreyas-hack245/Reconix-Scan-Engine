@@ -34,7 +34,7 @@ class DiscoveredEndpoint:
 
     url: str
     method: str = "GET"
-    source: str = "crawler"  # crawler, form, js, openapi, robots_sitemap
+    source: str = "crawler"
     status_code: int | None = None
     content_type: str | None = None
     has_form: bool = False
@@ -57,15 +57,6 @@ class CrawlResult:
 class Crawler:
     """
     Breadth-first, same-origin web crawler with safety limits.
-
-    Args:
-        base_url: The root URL to start crawling from (also defines scope).
-        max_depth: Maximum link-following depth from the base URL.
-        max_pages: Hard cap on total pages fetched, regardless of depth.
-        requests_per_second: Throttle applied to all outbound requests.
-        max_concurrent: Maximum number of in-flight requests at once.
-        respect_robots: Whether to skip paths disallowed by robots.txt.
-        timeout: Per-request timeout in seconds.
     """
 
     def __init__(
@@ -222,7 +213,7 @@ class Crawler:
 
         try:
             soup = BeautifulSoup(response.text, "xml")
-        except Exception as exc:  # pragma: no cover - defensive
+        except Exception as exc:
             logger.debug("Failed to parse sitemap %s: %s", sitemap_url, exc)
             return
 

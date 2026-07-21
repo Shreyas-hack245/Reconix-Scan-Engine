@@ -69,15 +69,3 @@ async def fetch_robots_txt(
         if field_name == "user-agent":
             current_agent_matches = value == DEFAULT_USER_AGENT_TOKEN
         elif field_name == "disallow" and current_agent_matches and value:
-            info.disallowed_paths.append(value)
-        elif field_name == "allow" and current_agent_matches and value:
-            info.allowed_paths.append(value)
-        elif field_name == "sitemap" and value:
-            info.sitemap_urls.append(urljoin(base_url, value))
-
-    logger.info(
-        "Parsed robots.txt: %d disallow rules, %d sitemap(s)",
-        len(info.disallowed_paths),
-        len(info.sitemap_urls),
-    )
-    return info

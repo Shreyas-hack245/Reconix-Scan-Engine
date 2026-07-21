@@ -19,7 +19,7 @@ class FormField:
     """A single field within a discovered HTML form."""
 
     name: str
-    field_type: str = "text"  # text, password, hidden, email, checkbox, select, textarea, file, etc.
+    field_type: str = "text"
     default_value: str = ""
 
 

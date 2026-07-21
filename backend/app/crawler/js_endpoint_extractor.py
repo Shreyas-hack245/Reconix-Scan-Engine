@@ -18,8 +18,6 @@ from app.core.logging_config import logger
 from app.core.rate_limiter import RateLimiter
 from app.utils.http_client import safe_request
 
-# Matches quoted strings that look like absolute paths or API-ish endpoints,
-# e.g. "/api/v1/users", '/orders/123', "https://example.com/api/items"
 _ENDPOINT_PATTERN = re.compile(
     r"""["'](?P<path>(?:https?://[^"'\s]+)|(?:/(?:api|v[0-9]+|graphql|rest)[^"'\s]*)|(?:/[a-zA-Z0-9_\-./]+))["']"""
 )
@@ -37,7 +35,7 @@ class JsEndpoint:
     """A candidate endpoint discovered inside JavaScript source."""
 
     url: str
-    source: str  # "inline" or the script src URL
+    source: str
 
 
 def _extract_candidate_paths(js_source: str) -> set[str]:
@@ -99,7 +97,7 @@ async def extract_js_endpoints(
         try:
             for path in _extract_candidate_paths(response.text):
                 _add(path, source=script_url)
-        except Exception as exc:  # defensive: malformed/binary script content
+        except Exception as exc:
             logger.debug("Failed to parse script %s: %s", script_url, exc)
 
     return discovered
