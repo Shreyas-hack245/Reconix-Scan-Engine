@@ -139,7 +139,10 @@ async def download_json_report(
     return Response(
         content=content,
         media_type="application/json",
-        headers={"Content-Disposition": f'attachment; filename="reconix-report-{scan_id}.json"'},
+        headers={
+            "Content-Disposition": f'attachment; filename="reconix-report-{scan_id}.json"',
+            "Cache-Control": "no-store",
+        },
     )
 
 
@@ -154,8 +157,11 @@ async def download_markdown_report(
     content = generate_markdown_report(report_data)
     return Response(
         content=content,
-        media_type="text/markdown",
-        headers={"Content-Disposition": f'attachment; filename="reconix-report-{scan_id}.md"'},
+        media_type="text/markdown; charset=utf-8",
+        headers={
+            "Content-Disposition": f'attachment; filename="reconix-report-{scan_id}.md"',
+            "Cache-Control": "no-store",
+        },
     )
 
 
@@ -168,7 +174,7 @@ async def download_html_report(
     """Render the scan report as HTML (viewable directly in a browser)."""
     report_data = await _build_report_data(scan_id, db, current_user)
     content = generate_html_report(report_data)
-    return Response(content=content, media_type="text/html")
+    return Response(content=content, media_type="text/html; charset=utf-8")
 
 
 @router.get("/{scan_id}/pdf")
@@ -181,10 +187,10 @@ async def download_pdf_report(
     report_data = await _build_report_data(scan_id, db, current_user)
     try:
         content = generate_pdf_report(report_data)
-    except ImportError as exc:  # pragma: no cover - depends on optional system libs
+    except Exception as exc:  # pragma: no cover - depends on optional system libs
         raise HTTPException(
-            status_code=status.HTTP_501_NOT_IMPLEMENTED,
-            detail="PDF generation is unavailable: the WeasyPrint system dependencies are not installed on this server.",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"PDF generation failed: {exc}",
         ) from exc
 
     return Response(
