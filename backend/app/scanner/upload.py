@@ -113,6 +113,6 @@ class FileUploadScanner(BaseScanner):
                     ),
                 )
             )
-            break  # one confirmed weak-validation finding per endpoint is sufficient
+            break
 
         return findings

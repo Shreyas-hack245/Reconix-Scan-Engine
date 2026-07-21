@@ -108,7 +108,7 @@ class ScannerOrchestrator:
                     for scanner in scanners:
                         try:
                             endpoint_findings.extend(await scanner.scan_endpoint(target))
-                        except Exception as exc:  # defensive: one module failing should not abort the scan
+                        except Exception as exc:
                             logger.warning("Scanner module %s failed on %s: %s", scanner.module_name, endpoint.url, exc)
                     return endpoint_findings
 
@@ -124,7 +124,7 @@ class ScannerOrchestrator:
                 base_findings = await info_scanner.scan_common_paths(crawl_result.base_url)
                 for finding in base_findings:
                     self._register_or_suppress(finding, dedup, result)
-            except Exception as exc:  # defensive
+            except Exception as exc:
                 logger.warning("info_disclosure common-path probe failed: %s", exc)
 
             result.endpoints_scanned = len(crawl_result.endpoints)

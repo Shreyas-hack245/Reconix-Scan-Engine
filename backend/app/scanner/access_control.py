@@ -35,7 +35,7 @@ class AccessControlScanner(BaseScanner):
         response = await self._request(
             endpoint.method,
             endpoint.url,
-            headers={},  # explicitly no Authorization header/cookies
+            headers={},
             notes="unauthenticated access-control probe",
         )
 

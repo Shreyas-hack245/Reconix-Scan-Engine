@@ -16,7 +16,6 @@ from app.scanner.base import BaseScanner, ScanFinding, ScanTarget, SafePoc, with
 
 _PATH_PARAM_HINTS = ("file", "path", "page", "doc", "document", "template", "include", "filename", "folder", "dir")
 
-# Read-only probes targeting a universally-present, non-sensitive file.
 _TRAVERSAL_PAYLOADS = [
     "../../../../etc/hosts",
     "..%2f..%2f..%2f..%2fetc%2fhosts",
@@ -81,6 +80,6 @@ class DirectoryTraversalScanner(BaseScanner):
                             ),
                         )
                     )
-                    break  # one confirmed payload per parameter is sufficient
+                    break
 
         return findings
