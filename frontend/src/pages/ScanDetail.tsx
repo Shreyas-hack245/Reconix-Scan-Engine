@@ -71,10 +71,13 @@ export default function ScanDetail() {
             const a = document.createElement("a");
             a.href = url;
             a.download = `reconix_report_${scanId}.${format === "markdown" ? "md" : format}`;
+            a.style.display = "none";
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
-            a.remove();
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            }, 100);
         } catch (err: any) {
             alert(err.message || `Failed to download ${format} report`);
         } finally {
